@@ -30,7 +30,7 @@
                 <!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
             </p>
             <p>Login in. To see it in action.</p>
-            <form class="m-t" role="form" action="../home/main" method='post'>
+            <form class="m-t" role="form" action="../home/authlogin" method='post'>
                 <div class="form-group">
                     <input name="shop_account" type="text" class="form-control" placeholder="Username" required="">
                 </div>

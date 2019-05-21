@@ -29,9 +29,9 @@ class home extends PUBLIC_CONTROLLER {
 	 * 登录验证
 	 * @return [type] [description]
 	 */
-	private function login(){
-		if (!IS_POST) {
-			return $this->index();
+	public function authlogin(){
+		if (!IS_POST) {			
+			return header('location:/home/index');	
 		}
 		$param=$this->input->post();
 		$data=['shop_account'=>$param['shop_account'],'shop_password'=>$param['shop_password']];
@@ -39,16 +39,14 @@ class home extends PUBLIC_CONTROLLER {
 		$result=$this->homeModel->login($data['shop_account'],$data['shop_password']);
 		if($result){
 			$this->session->set_userdata('userinfo',$result);	
-			$this->load->view('home/index');		
+			header('location:/main/index');					
 		}else{
-			$this->index();
+			header('location:/home/index');			
 		}		
 	}
-	/**
-	 * 主页面
-	 * @return [type] [description]
-	 */
-	public function main(){
-		$this->login();		
+
+	public function test(){
+		print_r($_SESSION);
 	}
+	
 }
