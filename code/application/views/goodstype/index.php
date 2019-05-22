@@ -1,5 +1,23 @@
 <div class="row">
     <div class="col-lg-12">
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+ 
+        <script type="text/html" id="toolbarDemo">
+          <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="add">新增大类</button>
+          </div>
+        </script>         
+        <script type="text/html" id="barDemo">
+            <div id="bar">
+              <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+              <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+          </div>
+        </script>
+     
+    </div>
+</div>
+<div class="row">    
+    <div class="col-lg-12">
         <table class="table table-striped table-bordered table-hover dataTables-example" >
             <thead>
                 <tr>
@@ -13,15 +31,17 @@
             <tbody>
                 <?php if(isset($goodstypeData)){foreach($goodstypeData as $item){ ?>
                     <tr>
-                        <td>Trident</td>
+                        <td class="center">                           
+                            <span class="btn label label-danger"><i class="fa fa-trash"></i></span>
+                        </td>
                         <td class="center"><?= $item['gt_name'] ?></td>
                         <td class="center">
-                            <span class='btn label label-default'>查看</span>
+                            <input name="gt_size" class="tagsinput" data-role="tagsinput" value="<?= $item['gt_size'] ?>" placeholder="输入后回车"/>
                         </td>
                         <td >                           
-                            <span class="btn label label-primary"><i class="fa fa-plus"></i></span>
+                            <input name="gt_color" class="tagsinput" data-role="tagsinput" value="<?= $item['gt_color'] ?>" placeholder="输入后回车"/>
                         </td>
-                        <td class="center">X</td>
+                        <td class="center"><?= $item['gt_data'] ?></td>
                     </tr>
                 <?php }}?>
             </tbody>

@@ -20,8 +20,14 @@ class goods extends BASE_Controller {
 		//选中的菜单项
 		$data['checkmenu']='goods_index';
 		//页面需要加载的js文件
-		$data['load_js']=["/js/plugins/chartJs/Chart.min.js","/js/demo/chartjs-demo.js"];
+		$data['load_css']=[
+			"/css/plugins/footable/footable.core.css"
+		];
+		$data['load_js']=[
+			"/js/plugins/footable/footable.all.min.js",
+			"/application/js/website.goods.js"
+		];
 		//输出页面
-		$this->display('sold_out/index',$data);
+		$this->display('goods/index',$data);
 	}	
 }

@@ -22,8 +22,8 @@ class home extends PUBLIC_CONTROLLER {
 	public function initdb(){
 		$this->load->model('installModel');
 		$this->installModel->initdb();
-		//创建测试账号
-		echo $this->installModel->create_testshop();
+		//创建测试数据
+		echo $this->installModel->create_testdata();
 	}
 	/**
 	 * 登录验证

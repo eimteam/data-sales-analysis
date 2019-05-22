@@ -27,13 +27,26 @@ class installModel extends MY_Model
      * 创建测试店铺
      * @return [type] [description]
      */
-    public function create_testshop(){
-        $data=[];
-        $data['shop_account']='test';
-        $data['shop_uid']=md5(md5(time()).$data['shop_account']);
-        $data['shop_password']='shop_'.md5('123456');
-        $data['shop_name']='TestShop';
-        return $this->db->insert('shoplist',$data);
+    public function create_testdata(){
+        $shop=[];
+        $shop['shop_account']='test';
+        $shop['shop_uid']=md5(md5(time()).$shop['shop_account']);
+        $shop['shop_password']='shop_'.md5('123456');
+        $shop['shop_name']='TestShop';
+        
+        $goodstype=[];
+        foreach (['短袖T恤','长袖T恤','休闲短衬','休闲长衬','牛仔短裤','牛仔长裤','休闲短裤','休闲长裤'] as $value) {
+            array_push($goodstype,[
+              'shop_uid'=>$shop['shop_uid'],
+              'gt_uid'=>md5(md5(time()).$value),
+              'gt_name'=>$value,
+              'gt_size'=>'{}',
+              'gt_color'=>'{}',
+              'gt_data'=>'{}'
+            ]);
+        } 
+        $this->db->insert('shoplist',$shop);
+        $this->db->insert_batch('goodstype',$goodstype);
     }
     /**
      * 初始化数据库
@@ -47,7 +60,7 @@ class installModel extends MY_Model
                 echo 'create '.$table.'<br/>';
 			}
     	}		
-    }
+    }    
     /**
      * 创建shoplist
      * @return [type] [description]
@@ -59,12 +72,13 @@ class installModel extends MY_Model
 			  `shop_password` varchar(125) NOT NULL,
 			  `shop_name` varchar(45) NOT NULL,
 			  `shop_address` varchar(255) DEFAULT NULL,
+        `sort` int(10) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`shop_uid`),
 			  UNIQUE KEY `shop_account` (`shop_account`) USING HASH
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";		
-		if (! $res = $this->db->query($sql)) {
-			echo 'create_table_failure shoplist';die;
-		}
+  		if (! $res = $this->db->query($sql)) {
+  			echo 'create_table_failure shoplist';die;
+  		}
     }
     private function create_staff(){
         $sql="CREATE TABLE `staff` (
@@ -76,6 +90,7 @@ class installModel extends MY_Model
               `st_month_task` int(11) NOT NULL DEFAULT '10000',
               `st_phone` varchar(32) DEFAULT NULL,
               `st_enable` tinyint(1) NOT NULL DEFAULT '1',
+              `sort` int(10) NOT NULL DEFAULT '0',
               PRIMARY KEY (`st_uid`),
               UNIQUE KEY `shop_uid` (`shop_uid`,`shop_account`) USING HASH
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";     
@@ -89,6 +104,7 @@ class installModel extends MY_Model
               `shop_uid` varchar(32) NOT NULL,
               `sys_key` varchar(32) NOT NULL DEFAULT '',
               `sys_value` text NOT NULL,
+              `sort` int(10) NOT NULL DEFAULT '0',
               PRIMARY KEY (`sys_uid`),
               UNIQUE KEY `shop_uid` (`shop_uid`,`sys_key`) USING HASH
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";     
@@ -104,6 +120,7 @@ class installModel extends MY_Model
               `gt_size` text NOT NULL,
               `gt_color` text NOT NULL,
               `gt_data` text,
+              `sort` int(10) NOT NULL DEFAULT '0',
               PRIMARY KEY (`gt_uid`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";     
         if (! $res = $this->db->query($sql)) {
@@ -121,6 +138,7 @@ class installModel extends MY_Model
               `go_price3` decimal(10,2) NOT NULL DEFAULT '0.00',
               `go_discount` decimal(5,2) NOT NULL DEFAULT '0.00',
               `gt_uid` varchar(32) NOT NULL,
+              `sort` int(10) NOT NULL DEFAULT '0',
               PRIMARY KEY (`go_uid`),
               UNIQUE KEY `shop_uid` (`shop_uid`,`go_code`) USING HASH
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";     
@@ -142,6 +160,7 @@ class installModel extends MY_Model
               `in_allcount` int(11) NOT NULL DEFAULT '0',
               `in_outcount` int(11) NOT NULL DEFAULT '0',
               `in_lasttime_out` int(11) NOT NULL DEFAULT '0',
+              `sort` int(10) NOT NULL DEFAULT '0',
               PRIMARY KEY (`in_uid`),
               UNIQUE KEY `shop_uid` (`shop_uid`,`go_uid`) USING HASH
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";     
@@ -157,6 +176,7 @@ class installModel extends MY_Model
               `ino_count` int(11) NOT NULL DEFAULT '0',
               `ino_createtime` int(11) NOT NULL DEFAULT '0',
               `ino_remark` varchar(32) DEFAULT NULL,
+              `sort` int(10) NOT NULL DEFAULT '0',
               PRIMARY KEY (`ino_uid`),
               UNIQUE KEY `ino_code` (`ino_code`) USING BTREE
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";     
@@ -177,6 +197,7 @@ class installModel extends MY_Model
               `item_count` int(11) NOT NULL DEFAULT '0',
               `item_size` text NOT NULL,
               `item_remark` varchar(32) DEFAULT NULL,
+              `sort` int(10) NOT NULL DEFAULT '0',
               PRIMARY KEY (`item_uid`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";     
         if (! $res = $this->db->query($sql)) {
@@ -193,6 +214,7 @@ class installModel extends MY_Model
               `st_uid` varchar(32) NOT NULL,
               `outo_createtime` int(11) NOT NULL DEFAULT '0',
               `outo_remark` varchar(32) DEFAULT NULL,
+              `sort` int(10) NOT NULL DEFAULT '0',
               PRIMARY KEY (`outo_uid`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";     
         if (! $res = $this->db->query($sql)) {
@@ -208,6 +230,7 @@ class installModel extends MY_Model
               `go_price` decimal(10,2) NOT NULL DEFAULT '0.00',
               `go_item` text NOT NULL,
               `outo_remark` varchar(32) DEFAULT NULL,
+              `sort` int(10) NOT NULL DEFAULT '0',
               PRIMARY KEY (`oitem_uid`)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";     
         if (! $res = $this->db->query($sql)) {

@@ -7,7 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><?= $main_title ?></title>
+    <link href="/layui/css/layui.css" rel="stylesheet">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- 当前视图特有的 css 文件 -->
     <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
     <!-- Toastr style -->
     <link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
@@ -15,7 +18,7 @@
     <link href="/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
     <link href="/css/animate.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-    <!-- 当前视图特有的 css 文件 -->
+    
     <?php if (isset($load_css)) {
         foreach ($load_css as $value) { ?>
             <link href="<?= $value  ?>" rel="stylesheet">
@@ -45,7 +48,7 @@
                         </li>
                     </ol>
                 </div>              
-            </div>
+            </div>          
             <div class="wrapper wrapper-content animated fadeInRight">
                 <?= $contents ?>
             </div>
@@ -61,11 +64,11 @@
         </div>  
     </div>
     <!-- Mainly scripts -->
-    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/jquery-3.1.1.min.js"></script>    
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
+    <script src="/layui/layui.all.js"></script>
     <!-- Flot -->
     <script src="/js/plugins/flot/jquery.flot.js"></script>
     <script src="/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
