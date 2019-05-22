@@ -19,7 +19,7 @@ class PUBLIC_CONTROLLER extends CI_Controller {
      * @param  string  $type   [description]
      * @return [type]          [description]
      */
-    public function ajaxReturn($data, $info = [], $status = 0, $type='json') {
+    public function ajaxReturn($data, $info = [], $status = 1, $type='json') {
 		$ret =[
 			'data' => $data,
 			'info' => $info,
@@ -47,7 +47,24 @@ class BASE_Controller extends PUBLIC_CONTROLLER{
         parent::__construct();
         //当前店铺的uid
         $this->shopuid=$this->get_shopuid();
+        
     } 
+
+    /**
+     * 验证权限是否合法
+     * @param  [type] $groupName    [控制器页面权限名称]
+     * @param  [type] $authName [页面操作权限名称]
+     * @return [type]           [true 存在 false不存在]
+     */
+    public function hash_auth($groupName,$authName){
+        //这里的权限在用户登录成功后进行缓存
+        $group=[
+            'goodstype'=>[
+                'child'=>['list','edit','delete','add']
+            ]
+        ];
+        return key_exists($groupName,$group) && in_array($authName,$group[$groupName]['child']);        
+    }
     /**
      * 获取当前店铺的uid
      * @return [type] [description]
@@ -56,11 +73,20 @@ class BASE_Controller extends PUBLIC_CONTROLLER{
         return $this->session->userdata('userinfo')['shop_uid'];
     }
     /**
+     * 皮肤配置页面
+     * @return [type] [description]
+     */
+    public function skin(){
+        $this->load->view('sys/skin-config');
+    } 
+    /**
      * 基类封装输出页面函数
      * @param  [type] $page [页面路径]
      * @return [type]       [description]
      */
     public function display($page,$data=[]){   
+        //将this变量传入到view中,以便view调用controller的方法
+        $data['controller']=$this;
         $this->set_menu_page($data);     
         //头部
         $this->template->set(
@@ -104,13 +130,7 @@ class BASE_Controller extends PUBLIC_CONTROLLER{
                             true)
         ); 
     }
-    /**
-     * 皮肤配置页面
-     * @return [type] [description]
-     */
-    public function skin(){
-        $this->load->view('sys/skin-config');
-    } 
+    
     /**
      * 获取当前用户的有效菜单
      * @return [type] [description]

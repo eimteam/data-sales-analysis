@@ -8,5 +8,7 @@ class MY_Model extends CI_Model
     function __construct()
     {
         parent::__construct();
+        //自动载入数据库
+        $this->load->database();
     }
 }
