@@ -1,5 +1,6 @@
 
 $('.dataTables-example').DataTable({
+        "serverSide": true,
         "info": true,
         'processing':true,
         'pageLength': 10,
@@ -25,4 +26,16 @@ $('.dataTables-example').DataTable({
         "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],
         //第一列参与排序
         "aaSorting": [[5, "asc"]],
+        "ajax":{
+            "url":'/goodstype/get_data',
+
+        },
+        "columns": [
+            { "data": "gt_uid" },
+            { "data": "gt_name" },
+            { "data": "gt_size" },
+            { "data": "gt_color" },
+            { "data": "gt_data" },
+            { "data": "sort" }
+        ],
     });

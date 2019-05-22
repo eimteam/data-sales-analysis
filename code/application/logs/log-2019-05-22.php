@@ -79,3 +79,25 @@ ERROR - 2019-05-22 09:41:56 --> 404 Page Not Found: Toastrjsmap/index
 ERROR - 2019-05-22 09:41:57 --> 404 Page Not Found: Js/plugins
 ERROR - 2019-05-22 09:43:11 --> 404 Page Not Found: Toastrjsmap/index
 ERROR - 2019-05-22 09:43:11 --> 404 Page Not Found: Js/plugins
+ERROR - 2019-05-22 09:54:53 --> 404 Page Not Found: Toastrjsmap/index
+ERROR - 2019-05-22 09:54:53 --> 404 Page Not Found: Js/plugins
+ERROR - 2019-05-22 09:54:53 --> 404 Page Not Found: Goodstype/goodstype
+ERROR - 2019-05-22 09:55:17 --> 404 Page Not Found: Toastrjsmap/index
+ERROR - 2019-05-22 09:55:17 --> 404 Page Not Found: Js/plugins
+ERROR - 2019-05-22 09:56:03 --> 404 Page Not Found: Toastrjsmap/index
+ERROR - 2019-05-22 09:56:03 --> 404 Page Not Found: Js/plugins
+ERROR - 2019-05-22 09:57:39 --> 404 Page Not Found: Toastrjsmap/index
+ERROR - 2019-05-22 09:57:39 --> 404 Page Not Found: Js/plugins
+ERROR - 2019-05-22 09:58:33 --> 404 Page Not Found: Toastrjsmap/index
+ERROR - 2019-05-22 09:58:34 --> 404 Page Not Found: Js/plugins
+ERROR - 2019-05-22 10:17:44 --> 404 Page Not Found: Toastrjsmap/index
+ERROR - 2019-05-22 10:17:44 --> 404 Page Not Found: Js/plugins
+ERROR - 2019-05-22 10:20:07 --> Severity: error --> Exception: syntax error, unexpected 'echo' (T_ECHO), expecting ';' D:\mygit\data-sales-analysis\code\application\controllers\goodstype.php 52
+ERROR - 2019-05-22 10:25:34 --> 404 Page Not Found: Toastrjsmap/index
+ERROR - 2019-05-22 10:25:34 --> 404 Page Not Found: Js/plugins
+ERROR - 2019-05-22 10:25:52 --> 404 Page Not Found: Toastrjsmap/index
+ERROR - 2019-05-22 10:25:53 --> 404 Page Not Found: Js/plugins
+ERROR - 2019-05-22 10:26:44 --> 404 Page Not Found: Toastrjsmap/index
+ERROR - 2019-05-22 10:26:44 --> 404 Page Not Found: Js/plugins
+ERROR - 2019-05-22 10:27:01 --> 404 Page Not Found: Toastrjsmap/index
+ERROR - 2019-05-22 10:27:02 --> 404 Page Not Found: Js/plugins

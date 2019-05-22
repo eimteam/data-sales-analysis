@@ -34,16 +34,29 @@ class goodstype extends BASE_Controller {
 			'/application/js/website.goodstype.js',
 		];
 		//查询出大类的数据并交给页面		
-		$result=$this->goodstypeModel->getGoodsType(['where'=>['shop_uid'=>$this->shopuid]]);
-		$data['goodstypeData']=$result;			
+		//$result=$this->goodstypeModel->getGoodsType(['where'=>['shop_uid'=>$this->shopuid]]);
+		//$data['goodstypeData']=$result;			
 		//输出页面
 		$this->display('goodstype/index',$data);
 	}
+
 	public $rules=[
 		 [
             'field' => 'gt_uid', 'label' => 'gt_uid', 'rules' => 'required|min_length[31]|max_length[32]',
          ],
 	];
+	public function get_data(){
+		var_dump($_GET);
+		$result=$this->goodstypeModel->getGoodsType(['where'=>['shop_uid'=>$this->shopuid]]);
+		$draw=intval($this->input->get('draw'))+1;
+
+		echo '{
+		  "draw": '.$draw.',
+		  "recordsTotal": 57,
+		  "recordsFiltered": 57,
+		  "data":'.json_encode($result).'
+		}';
+	}
 	/**
 	 * 编辑页面
 	 * @return [type] [description]
