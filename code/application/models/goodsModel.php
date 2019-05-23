@@ -3,12 +3,12 @@
 /**
  * 初始化数据库
  */
-class goodstypeModel extends MY_Model
+class goodsModel extends MY_Model
 {
     function __construct()
     {
         parent::__construct();
         //数据库表名称
-        $this->tableName="goodstype";
-    }  
+        $this->tableName="goods";
+    } 
 }

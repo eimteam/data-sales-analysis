@@ -1,116 +1,132 @@
-<div class="row">
-                <div class="col-lg-12">
-                    <div class="ibox float-e-margins">                       
-                        <div class="ibox-content">
-                            <table class="footable table table-stripped toggle-arrow-tiny">
-                                <thead>
-                                <tr>
-                                    <th data-toggle="true">Project</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th data-hide="all">Company</th>
-                                    <th data-hide="all">Completed</th>
-                                    <th data-hide="all">Task</th>
-                                    <th data-hide="all">Date</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Project - This is example of project</td>
-                                    <td>Patrick Smith</td>
-                                    <td>0800 051213</td>
-                                    <td>Inceptos Hymenaeos Ltd</td>
-                                    <td><span class="pie">0.52/1.561</span></td>
-                                    <td>20%</td>
-                                    <td>Jul 14, 2013</td>
-                                    <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>Alpha project</td>
-                                    <td>Alice Jackson</td>
-                                    <td>0500 780909</td>
-                                    <td>Nec Euismod In Company</td>
-                                    <td><span class="pie">6,9</span></td>
-                                    <td>40%</td>
-                                    <td>Jul 16, 2013</td>
-                                    <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>Betha project</td>
-                                    <td>John Smith</td>
-                                    <td>0800 1111</td>
-                                    <td>Erat Volutpat</td>
-                                    <td><span class="pie">3,1</span></td>
-                                    <td>75%</td>
-                                    <td>Jul 18, 2013</td>
-                                    <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>Gamma project</td>
-                                    <td>Anna Jordan</td>
-                                    <td>(016977) 0648</td>
-                                    <td>Tellus Ltd</td>
-                                    <td><span class="pie">4,9</span></td>
-                                    <td>18%</td>
-                                    <td>Jul 22, 2013</td>
-                                    <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>Alpha project</td>
-                                    <td>Alice Jackson</td>
-                                    <td>0500 780909</td>
-                                    <td>Nec Euismod In Company</td>
-                                    <td><span class="pie">6,9</span></td>
-                                    <td>40%</td>
-                                    <td>Jul 16, 2013</td>
-                                    <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>Project
-                                        <small>This is example of project</small>
-                                    </td>
-                                    <td>Patrick Smith</td>
-                                    <td>0800 051213</td>
-                                    <td>Inceptos Hymenaeos Ltd</td>
-                                    <td><span class="pie">0.52/1.561</span></td>
-                                    <td>20%</td>
-                                    <td>Jul 14, 2013</td>
-                                    <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
-                                </tr>
-                                <tr>
-                                    <td>Gamma project</td>
-                                    <td>Anna Jordan</td>
-                                    <td>(016977) 0648</td>
-                                    <td>Tellus Ltd</td>
-                                    <td><span class="pie">4,9</span></td>
-                                    <td>18%</td>
-                                    <td>Jul 22, 2013</td>
-                                    <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
-                                </tr>
-                              
-                                <tr>
-                                    <td>Gamma project</td>
-                                    <td>Anna Jordan</td>
-                                    <td>(016977) 0648</td>
-                                    <td>Tellus Ltd</td>
-                                    <td><span class="pie">4,9</span></td>
-                                    <td>18%</td>
-                                    <td>Jul 22, 2013</td>
-                                    <td><a href="#"><i class="fa fa-check text-navy"></i></a></td>
-                                </tr>
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <td colspan="5">
-                                        <ul class="pagination pull-right"></ul>
-                                    </td>
-                                </tr>
-                                </tfoot>
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
+<div class="row">    
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <table class="table table-striped table-bordered table-hover dataTables-goods" width="100%">                                       
+                </table>
             </div>
-    
+        </div>
+    </div>
+</div>
+<script  type="text/tmplate" id="toolbar_option">
+    <div class="btn-group">
+        <?php if($controller->hash_auth('goods','add')){?>
+        <button class="btn btn-sm btn-primary" onclick="add()">
+            <i class="fa fa-plus"></i>新增款号
+        </button>
+        <?php }?>
+        <button class="btn btn-sm btn-success" onclick="table.ajax.reload();">
+            <i class="fa fa-refresh"></i>刷新
+        </button>
+    </div>
+</script>
+<script  type="text/tmplate" id="option">    
+    <?php if($controller->hash_auth('goods','delete')){?>
+    <button class="btn label label-danger" onclick="del(this)">
+        <i class="fa fa-trash"></i>删除
+    </button>
+    <?php }?>
+    <?php if($controller->hash_auth('goods','edit')){?>
+        &nbsp;
+    <button class="btn label label-primary" onclick="edit(this)">
+        <i class="fa fa-pencil"></i>编辑
+    </button>
+    <?php }?>    
+</script>
+<script>
+    <?php if($controller->hash_auth('goods','edit')){?>   
+    var add_html="";
+    //获取页面html   
+    function add(){
+        if (add_html!="") {
+            return showAddPage();
+        }
+        layer.load(1); 
+        $.post('/goods/addpage', {}, function(str){
+          layer.close(layer.index);
+          add_html=str.data;
+          showAddPage();
+        },'json').fail(function(data,status){
+            layer.close(layer.index);
+            layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
+        });
+    }
+    //弹出页面
+    function showAddPage(){
+        layer.open({
+            type: 1,
+            area: ['40%','80%'],
+            content:add_html,
+            btn: ['保存', '关闭'],
+            yes:function(index,layero){                
+                save('add_goods');
+                return false;
+              }           
+          });
+    }
+    <?php }?> 
+    <?php if($controller->hash_auth('goods','edit')){?>      
+    function edit(t){
+        var row_data = table.row(t.parentNode).data();//t.parentNode 指的是按钮所在的行
+        layer.load(1); 
+        $.post('/goods/editpage', {'go_uid':row_data.go_uid,"gt_uid":row_data.gt_uid}, function(str){
+          layer.close(layer.index);
+          layer.open({
+            type: 1,
+            area: ['40%','80%'],
+            content: str.data,
+            btn: ['保存', '关闭'],
+            yes:function(index,layero){                
+                save('save_goods');                
+                return false;
+              }           
+          });
+        },'json').fail(function(data,status){
+            layer.close(layer.index);
+            layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
+        });
+    } 
+    <?php }?> 
+    <?php if($controller->hash_auth('goods','save')){?>                   
+    //保存数据
+    function save(url){
+        var postData = $("#gtypeform").serializeArray(); 
+        layer.load(1);              
+        $.post('/goods/'+url,postData,function(res){
+            layer.close(layer.index);
+            if (res.status) {
+                layer.closeAll();
+                layer.msg('保存成功',{icon:6});
+                table.ajax.reload(); 
+            }else{                
+                layer.msg('保存失败:'+JSON.stringify(res.info),{icon:5,time:5000});
+            }
+        },'json').fail(function(data,status){
+            layer.close(layer.index);
+            layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
+        });
+    }
+    <?php }?>
+    <?php if($controller->hash_auth('goods','delete')){?> 
+　　function del(t){
+        var row_data = table.row(t.parentNode).data();//t.parentNode 指的是按钮所在的行
+        layer.confirm('确认删除['+row_data.go_name+']吗?', 
+            {icon: 3, title:'提示'}, function(index){         
+            layer.load(1);              
+            $.post('/goods/del_goodstype',{'gt_uid':row_data.gt_uid},function(res){
+                layer.close(layer.index);
+                if (res.status) {
+                    layer.closeAll();
+                    layer.msg('删除成功',{icon:6});
+                    table.ajax.reload(); 
+                }else{                
+                    layer.msg('删除失败:'+JSON.stringify(res.info),{icon:5,time:5000});
+                }
+            },'json').fail(function(data,status){
+                layer.close(layer.index);
+                layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
+            });
+        });
+    }
+    <?php }?>
+</script>

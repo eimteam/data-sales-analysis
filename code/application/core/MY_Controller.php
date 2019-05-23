@@ -46,10 +46,18 @@ class BASE_Controller extends PUBLIC_CONTROLLER{
     {
         parent::__construct();
         //当前店铺的uid
-        $this->shopuid=$this->get_shopuid();
-        
+        $this->shopuid=$this->get_shopuid();        
     } 
-
+    /**
+     * 专门针对datatables的查询方法
+     * ajax get参数请参考
+     * http://www.datatables.club/example/server_side/simple.html
+     * @return [type] [description]
+     */
+    public function get_datatable_data(){       
+        $getData=$this->input->get();//拿到GET参数    
+        $this->Model->dataTables($getData);
+    }
     /**
      * 验证权限是否合法
      * @param  [type] $groupName    [控制器页面权限名称]
@@ -60,7 +68,10 @@ class BASE_Controller extends PUBLIC_CONTROLLER{
         //这里的权限在用户登录成功后进行缓存
         $group=[
             'goodstype'=>[
-                'child'=>['list','edit','delete','add']
+                'child'=>['list','edit','delete','add','save']
+            ],
+            'goods'=>[
+                'child'=>['list','edit','delete','add','save']
             ]
         ];
         return key_exists($groupName,$group) && in_array($authName,$group[$groupName]['child']);        

@@ -68,7 +68,7 @@
     <script src="/js/plugins/toastr/toastr.min.js"></script>    
     <!-- Custom and plugin javascript -->
     <script src="/js/inspinia.js"></script>
-   
+   <script src="/application/website.js"></script>
     <!-- 当前视图特有的 js 文件 -->
     <?php if (isset($load_js)) {
         foreach ($load_js as $value) { ?>

@@ -1,18 +1,22 @@
 
-$('.dataTables-example').DataTable({
+var table=$('.dataTables-example').DataTable({
         "serverSide": true,
         "info": true,
+        "stateSave": true,
         'processing':true,
         'pageLength': 10,
+        "lengthMenu": [5,10,15, 25, 50, 75, 100],
         'responsive': true,
         "searching": true,
-        "dom": 'lfrtip',
+        "deferRender": true,//延迟渲染
+        "autoWidth": true,
+        "dom":'lfrtip',
         "oLanguage": {
              "sLengthMenu": "每页显示 _MENU_ 条",
              "sZeroRecords": "对不起，查询不到任何相关数据",
-             "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_条记录",
+             "sInfo": "当前 _START_ - _END_ 条,(共 _TOTAL_条)",
              "sInfoEmtpy": "找不到相关数据",
-             "sInfoFiltered": "数据表中共为 _MAX_ 条记录)",
+             "sInfoFiltered": ",全部总数 _MAX_ 条记录",
              "sProcessing": "正在加载中...",
              "sSearch": "全文检索",
              "oPaginate": {
@@ -22,20 +26,42 @@ $('.dataTables-example').DataTable({
                  "sLast": " 最后一页 "
             }
         },
-        //指定地0列不参加排序
-        "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 0 ] }],
-        //第一列参与排序
+        //状态保存到本地
+        'stateSaveCallback': function(settings,data) {
+          localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) );
+        },
+        //状态本地获取
+        'stateLoadCallback': function(settings) {
+            return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) );
+        },
+        //指定列
+        "aoColumnDefs": [ 
+          { 
+            "bSortable": false, //不参与排序
+            "aTargets": 0,
+            "searchable":false, //不进行检索
+           
+          }
+        ],
+        //第5列参与排序
         "aaSorting": [[5, "asc"]],
         "ajax":{
-            "url":'/goodstype/get_data',
+            "url":'/goodstype/get_datatable_data',
 
         },
         "columns": [
-            { "data": "gt_uid" },
+            { 
+              "data": "gt_uid" ,
+              "render": function (data, type, row) {                  
+                  return $("#option").html();
+              }
+            },
             { "data": "gt_name" },
             { "data": "gt_size" },
             { "data": "gt_color" },
             { "data": "gt_data" },
             { "data": "sort" }
-        ],
+        ]        
     });
+//新增按钮追加到表格工具栏上
+$("div.dataTables_filter").append($("#toolbar_option").html());

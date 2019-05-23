@@ -2,7 +2,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-content">
-                <table class="table table-striped table-bordered table-hover dataTables-example" >
+                <table class="table table-striped table-bordered table-hover dataTables-example" width="100%">
                     <thead>
                         <tr>
                             <th>操作</th>
@@ -12,72 +12,131 @@
                             <th>其他</th>
                             <th>排序</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php if(isset($goodstypeData)){foreach($goodstypeData as $item){ ?>
-                            <tr>
-                                <td class="center">   
-                                    <?php if($controller->hash_auth('goodstype','delete')){?>
-                                    <span class="btn label label-danger">
-                                        <i class="fa fa-trash"></i>
-                                    </span>
-                                    <?php }?>
-                                    <?php if($controller->hash_auth('goodstype','edit')){?>
-                                        &nbsp;
-                                    <span class="btn label label-primary" onclick="edittype('<?= $item['gt_uid'] ?>')">
-                                        <i class="fa fa-pencil"></i>
-                                    </span>
-                                    <?php }?>
-                                </td>
-                                <td class="center"><?= $item['gt_name'] ?></td>
-                                <td class="center">
-                                    <?php foreach(explode(',',$item['gt_size'] ) as $size){?>
-                                        <label class="label"><?= $size ?></label>
-                                    <?php } ?>
-                                </td>
-                                <td >       
-                                    <?php foreach(explode(',',$item['gt_color'] ) as $color){?>
-                                        <label class="label"><?= $color ?></label>
-                                    <?php } ?>
-                                </td>
-                                <td class="center"><?= $item['gt_data'] ?></td>
-                                <td class="center"><?= $item['sort'] ?></td>
-                            </tr>
-                        <?php }}?>
-                    </tbody>                    
+                    </thead>                   
                 </table>
             </div>
         </div>
     </div>
 </div>
+<script  type="text/tmplate" id="toolbar_option">
+    <div class="btn-group">
+        <?php if($controller->hash_auth('goodstype','add')){?>
+        <button class="btn btn-sm btn-primary" onclick="add()">
+            <i class="fa fa-plus"></i>新增大类
+        </button>
+        <?php }?>
+        <button class="btn btn-sm btn-success" onclick="table.ajax.reload();">
+            <i class="fa fa-refresh"></i>刷新
+        </button>
+    </div>
+</script>
+<script  type="text/tmplate" id="option">    
+    <?php if($controller->hash_auth('goodstype','delete')){?>
+    <button class="btn label label-danger" onclick="deltype(this)">
+        <i class="fa fa-trash"></i>删除
+    </button>
+    <?php }?>
+    <?php if($controller->hash_auth('goodstype','edit')){?>
+        &nbsp;
+    <button class="btn label label-primary" onclick="edit(this)">
+        <i class="fa fa-pencil"></i>编辑
+    </button>
+    <?php }?>    
+</script>
 <script>
-    <?php if($controller->hash_auth('goodstype','edit')){?>    
-    function edittype(uid){
-        $.post('/goodstype/editpage', {'gt_uid':uid}, function(str){
+    <?php if($controller->hash_auth('goodstype','edit')){?>   
+    var add_html="";
+    //获取页面html   
+    function add(){
+        if (add_html!="") {
+            return showAddPage();
+        }
+        layer.load(1); 
+        $.post('/goodstype/addpage', {}, function(str){
+          layer.close(layer.index);
+          add_html=str.data;
+          showAddPage();
+        },'json').fail(function(data,status){
+            layer.close(layer.index);
+            layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
+        });
+    }
+    //弹出页面
+    function showAddPage(){
+        layer.open({
+            type: 1,
+            area: ['40%','60%'],
+            content:add_html,
+            btn: ['保存', '关闭'],
+            yes:function(index,layero){                
+                save('add_goodstype');
+                return false;
+              }           
+          });
+    }
+    <?php }?> 
+    <?php if($controller->hash_auth('goodstype','edit')){?>      
+    function edit(t){
+        var row_data = table.row(t.parentNode).data();//t.parentNode 指的是按钮所在的行
+        layer.load(1); 
+        $.post('/goodstype/editpage', {'gt_uid':row_data.gt_uid}, function(str){
+          layer.close(layer.index);
           layer.open({
             type: 1,
             area: ['40%','60%'],
             content: str.data,
             btn: ['保存', '关闭'],
-            yes:function(index,layero){
-                layer.load(); 
-                save();
+            yes:function(index,layero){                
+                save('save_goodstype');                
                 return false;
               }           
           });
-        },'json');          
-    }
+        },'json').fail(function(data,status){
+            layer.close(layer.index);
+            layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
+        });
+    } 
+    <?php }?> 
+    <?php if($controller->hash_auth('goodstype','save')){?>                   
     //保存数据
-    function save(){
-        var postData = $("#gtypeform").serializeArray();                
-        $.post('/goodstype/save_goodstype',postData,function(res){
+    function save(url){
+        var postData = $("#gtypeform").serializeArray(); 
+        layer.load(1);              
+        $.post('/goodstype/'+url,postData,function(res){
+            layer.close(layer.index);
             if (res.status) {
                 layer.closeAll();
                 layer.msg('保存成功',{icon:6});
-            }else{
-                layer.msg(res.info,{icon:5});
+                table.ajax.reload(); 
+            }else{                
+                layer.msg('保存失败:'+JSON.stringify(res.info),{icon:5,time:5000});
             }
-        },'json');
+        },'json').fail(function(data,status){
+            layer.close(layer.index);
+            layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
+        });
+    }
+    <?php }?>
+    <?php if($controller->hash_auth('goodstype','delete')){?> 
+　　function deltype(t){
+        var row_data = table.row(t.parentNode).data();//t.parentNode 指的是按钮所在的行
+        layer.confirm('确认删除['+row_data.gt_name+']吗?', 
+            {icon: 3, title:'提示'}, function(index){         
+            layer.load(1);              
+            $.post('/goodstype/del_goodstype',{'gt_uid':row_data.gt_uid},function(res){
+                layer.close(layer.index);
+                if (res.status) {
+                    layer.closeAll();
+                    layer.msg('删除成功',{icon:6});
+                    table.ajax.reload(); 
+                }else{                
+                    layer.msg('删除失败:'+JSON.stringify(res.info),{icon:5,time:5000});
+                }
+            },'json').fail(function(data,status){
+                layer.close(layer.index);
+                layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
+            });
+        });
     }
     <?php }?>
 </script>
