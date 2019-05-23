@@ -377,14 +377,40 @@ $config['encryption_key'] = '';
 | except for 'cookie_prefix' and 'cookie_httponly', which are ignored here.
 |
 */
+/*物理路径存储*/
+/*
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] = FCPATH.'public/sess_save_path';
+
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
-
+//$config['sess_save_path'] = FCPATH.'public/sess_save_path';
+*/
+/* Redis session 配置 */
+$config['sess_driver'] = 'redis';
+//你想要保存 Session Cookie 的名字
+$config['sess_cookie_name'] = 'ci_session';
+// 	session 持续的秒数。默认是2个小时(7200秒)。如果将这个数值设为: 0，就可以得到 永久 session。
+$config['sess_expiration'] = 7200;
+//是否通过用户的IP地址来读取 session 的数据。 注意 ，有些网络运行商 ISPs 会动态的改变IP, 所以将这个选项设为 FALSE， 才有可能得到永久的 session。 
+$config['sess_match_ip'] = FALSE;
+//这个选项控制 session 类多久会产生一个新的session 和 session id。 
+$config['sess_time_to_update'] = 0;
+//销毁与旧会话ID关联的会话数据
+$config['sess_regenerate_destroy'] = TRUE;//FALSE;
+//这个选项决定当浏览器窗口关闭时是否自动使session过期。
+$config['sess_expire_on_close'] = TRUE;
+//是否对 session 数据加密. 
+$config['sess_encrypt_cookie'] = FALSE;
+//是否将 session 数据存放入数据库中。在开启这个选项前，你要先创建一个数据库表。
+$config['sess_use_database'] = FALSE; 
+//session 数据库表的名字。
+//$config['sess_table_name']
+$config['session_name'] = "eonch_shopinfo";
+//$config['sess_save_path'] = 'localhost:6379?prefix=ci_sess:&auth=eonchcti&database=2&timeout=60';
+$config['sess_save_path'] = 'localhost:6379?prefix=ci_sess:&database=2&timeout=60';
 /*
 |--------------------------------------------------------------------------
 | Cookie Related Variables
