@@ -37,6 +37,16 @@ class PUBLIC_CONTROLLER extends CI_Controller {
 			echo json_encode($ret);
 		}
 	}
+    /**
+     * 是否已登录
+     * @return boolean [description]
+     */
+    public  function is_login(){
+        if ($this->session->userdata('userinfo')&&$this->session->userdata('userinfo')['shop_uid']) {
+            return true;  
+        }
+        return false;
+    }
 }
 /**
  * 验证身份的基类
@@ -45,6 +55,16 @@ class BASE_Controller extends PUBLIC_CONTROLLER{
 	public function __construct()
     {
         parent::__construct();
+        //是否已登录
+        if (!$this->is_login()) {
+            header('location:/home/index');  
+            die;   
+        }
+        //是否为锁定状态
+        if($this->session->userdata('userlocked')===true){
+            header('location:/home/userlocked');  
+            die; 
+        }
         //当前店铺的uid
         $this->shopuid=$this->get_shopuid();        
     } 
@@ -65,13 +85,18 @@ class BASE_Controller extends PUBLIC_CONTROLLER{
      * @return [type]           [true 存在 false不存在]
      */
     public function hash_auth($groupName,$authName){
-        //这里的权限在用户登录成功后进行缓存
+        /*这里的权限在用户登录成功后进行缓存
+        key:权限key名称,可以用控制器名称命名,也可以自定义。key要保证唯一性
+        */
         $group=[
             'goodstype'=>[
-                'child'=>['list','edit','delete','add','save']
+                'child'=>['list','edit','add','save'] //'delete' 权限不给 逻辑上不需要删除
             ],
             'goods'=>[
-                'child'=>['list','edit','delete','add','save']
+                //price 查看进购价
+                'child'=>['list','edit','add','save','price'] //'delete',权限不给 逻辑上不需要删除
+            ],'inventoryorder'=>[                
+                'child'=>['list','edit','add','save','delete']
             ]
         ];
         return key_exists($groupName,$group) && in_array($authName,$group[$groupName]['child']);        
@@ -211,6 +236,14 @@ class BASE_Controller extends PUBLIC_CONTROLLER{
                     'goodstype_index'=>[
                         'name'=>'大类管理 ',//子菜单名称                    
                         'href'=>'/goodstype/index',//子菜单URL
+                    ],
+                    'goodstype1_index'=>[
+                        'name'=>'销账单 ',//子菜单名称                    
+                        'href'=>'/goodstype/index',//子菜单URL
+                    ],
+                    'inventoryorder_index'=>[
+                        'name'=>'来货单 ',//子菜单名称                    
+                        'href'=>'/inventoryorder/index',//子菜单URL
                     ]
                 ]
             ]

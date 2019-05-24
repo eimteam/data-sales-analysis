@@ -27,7 +27,7 @@ class MY_Model extends CI_Model
     		die;
     	}
     	log_message('debug','SearchTable:'.$this->tableName.'dataTables:'.print_r($getData,true));	
-        $where=['shop_uid'=>$this->shopuid]; 
+        $where=[$this->tableName.'.shop_uid'=>$this->shopuid]; 
     	//表的总记录数 必要
 		$recordsTotal = $this->db->where($where)->count_all_results($this->tableName);    	   	
     	$this->db->where($where);
@@ -49,6 +49,16 @@ class MY_Model extends CI_Model
 		}
 		//条件过滤后记录数 必要
 		$recordsFiltered = $this->db->count_all_results($this->tableName,false);
+        //join 操作，这个是根据逻辑特殊的控制器而设计
+        if (isset($getData['_join'])) {
+            foreach($getData['_join'] as $join){
+                $this->db->join($join[0],$join[1],$join[2]);
+            }
+        }
+        //select  这个是根据逻辑特殊的控制器而设计
+        if (isset($getData['_select'])) {
+            $this->db->select($getData['_select']);
+        }       
 		//分页
 		$start = isset($getData['start'])?intval($getData['start']):0;//从多少开始
 		$length = intval($getData['length']);//数据长度		

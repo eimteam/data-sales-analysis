@@ -58,6 +58,8 @@ String.prototype.format = function(args)
  */
 window.onerror = function (msg, url, lineNo, columnNo, error) 
 { 
+    console.log(error);
+    console.log(columnNo);
    // 处理error信息
    layer.alert("<p>发生错误可能是您没有操作权限.<p/><p>请联系管理员!<p/>错误信息:"+msg,{icon:5,title:'错误提示'});
 }

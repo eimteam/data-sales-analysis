@@ -107,8 +107,13 @@
         </ul>
     </li>
     <li>
-        <a href="login.html">
-            <i class="fa fa-sign-out"></i> Log out
+        <a href="/home/userlocked" title="锁定登录">
+            <i class="fa fa-lock fa-lg"></i>
+        </a>
+    </li>
+    <li>
+        <a href="/home/logout" title="安全退出">
+            <i class="fa fa-sign-out"></i> 安全退出
         </a>
     </li>
    

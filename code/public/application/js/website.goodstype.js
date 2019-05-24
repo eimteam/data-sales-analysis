@@ -1,4 +1,4 @@
-
+$.fn.dataTable.ext.errMode = 'throw';//设置DataTables的错误提示方式为抛出异常 
 var table=$('.dataTables-example').DataTable({
         "serverSide": true,
         "info": true,
@@ -33,25 +33,16 @@ var table=$('.dataTables-example').DataTable({
         //状态本地获取
         'stateLoadCallback': function(settings) {
             return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) );
-        },
-        //指定列
-        "aoColumnDefs": [ 
-          { 
-            "bSortable": false, //不参与排序
-            "aTargets": 0,
-            "searchable":false, //不进行检索
-           
-          }
-        ],
-        //第5列参与排序
-        "aaSorting": [[5, "asc"]],
+        },   
         "ajax":{
             "url":'/goodstype/get_datatable_data',
 
         },
+        //第1列参与排序
+        "aaSorting": [[1, "asc"]],
         "columns": [
             { 
-              "data": "gt_uid" ,
+              "data": "gt_uid" ,"orderable": false,"searchable": false,//不参与排序 不参与检索
               "render": function (data, type, row) {                  
                   return $("#option").html();
               }
@@ -60,7 +51,7 @@ var table=$('.dataTables-example').DataTable({
             { "data": "gt_size" },
             { "data": "gt_color" },
             { "data": "gt_data" },
-            { "data": "sort" }
+            { "data": "sort","targets":1}
         ]        
     });
 //新增按钮追加到表格工具栏上

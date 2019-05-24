@@ -23,4 +23,18 @@ class homeModel extends MY_Model
           return $this->db->where(['shop_account'=>$account,'shop_password'=>'shop_'.md5($pwd)])->get('shoplist')->row_array();
         }        
     }
+    /**
+     * 密码解锁
+     * @param  [type] $pwd [description]
+     * @return [type]      [description]
+     */
+    public function unlocked($pwd){        
+        if (isset($_SESSION['userinfo']['shop_password'])&&'shop_'.md5($pwd)==$_SESSION['userinfo']['shop_password']) {
+            return true;
+        }
+        if (isset($_SESSION['userinfo']['st_pwd'])&&'st_'.md5($pwd)==$_SESSION['userinfo']['st_pwd']) {
+            return true;
+        }
+        return false;
+    }
 }

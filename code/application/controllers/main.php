@@ -15,5 +15,5 @@ class main extends BASE_Controller {
 		$data=[];
 		$data['checkmenu']='shouye';
 		$this->display('main/index',$data);
-	}	
+	}
 }

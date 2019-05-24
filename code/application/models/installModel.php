@@ -35,18 +35,31 @@ class installModel extends MY_Model
         $shop['shop_name']='TestShop';
         
         $goodstype=[];
-        foreach (['短袖T恤','长袖T恤','休闲短衬','休闲长衬','牛仔短裤','牛仔长裤','休闲短裤','休闲长裤'] as $value) {
+        foreach (['短袖T恤','长袖T恤','休闲短衬','休闲长衬','牛仔外套','防晒衣','休闲短款夹克','休闲长款风衣'] as $value) {
             array_push($goodstype,[
               'shop_uid'=>$shop['shop_uid'],
               'gt_uid'=>md5(md5(time()).$value),
               'gt_name'=>$value,
-              'gt_size'=>'{}',
-              'gt_color'=>'{}',
-              'gt_data'=>'{}'
+              'gt_size'=>'M,L,XL,2XL,3XL,4XL,5XL,6XL,7XL,8XL',
+              'gt_color'=>'白色,黑色,军绿色,黄色',
+              'gt_data'=>''
             ]);
-        } 
+        }
+        $goods=[];
+        foreach (['1','2','3','4'] as $value) {
+            array_push($goods,[
+              'shop_uid'=>$shop['shop_uid'],
+              'go_uid'=>md5(md5(time()).$value),
+              'go_code'=>$value,
+              'go_name'=>$value,
+              'gt_uid'=>md5(md5(time()).$value),
+              'first_time'=>date("Y-m-d h:i:s",time()),
+              'last_time'=>date("Y-m-d h:i:s",time()),
+            ]);
+        }
         $this->db->insert('shoplist',$shop);
         $this->db->insert_batch('goodstype',$goodstype);
+        $this->db->insert_batch('goods',$goods);
     }
     /**
      * 初始化数据库
@@ -139,6 +152,13 @@ class installModel extends MY_Model
               `go_discount` decimal(5,2) NOT NULL DEFAULT '0.00',
               `gt_uid` varchar(32) NOT NULL,
               `sort` int(10) NOT NULL DEFAULT '0',
+              `enable` int(10) NOT NULL DEFAULT '1',
+              `first_time` datetime,
+              `last_time` datetime,
+              `in_count` int(10) NOT NULL DEFAULT '0',
+              `sell_count` int(10) NOT NULL DEFAULT '0',
+              `return_count` int(10) NOT NULL DEFAULT '0',
+              `count` int(10) NOT NULL DEFAULT '0',
               PRIMARY KEY (`go_uid`),
               UNIQUE KEY `shop_uid` (`shop_uid`,`go_code`) USING HASH
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";     

@@ -8,6 +8,7 @@
         </div>
     </div>
 </div>
+
 <script  type="text/tmplate" id="toolbar_option">
     <div class="btn-group">
         <?php if($controller->hash_auth('goods','add')){?>
@@ -20,18 +21,19 @@
         </button>
     </div>
 </script>
-<script  type="text/tmplate" id="option">    
-    <?php if($controller->hash_auth('goods','delete')){?>
-    <button class="btn label label-danger" onclick="del(this)">
-        <i class="fa fa-trash"></i>删除
+<script  type="text/tmplate" id="option">       
+    <?php if($controller->hash_auth('goods','price')){?>
+        &nbsp;
+    <button class="btn label label-warning" onclick="price(this)">
+        <i class="fa fa-rmb"></i>
     </button>
-    <?php }?>
+    <?php }?> 
     <?php if($controller->hash_auth('goods','edit')){?>
         &nbsp;
     <button class="btn label label-primary" onclick="edit(this)">
         <i class="fa fa-pencil"></i>编辑
     </button>
-    <?php }?>    
+    <?php }?>  
 </script>
 <script>
     <?php if($controller->hash_auth('goods','edit')){?>   
@@ -73,6 +75,7 @@
           layer.close(layer.index);
           layer.open({
             type: 1,
+            anim:-1,            
             area: ['40%','80%'],
             content: str.data,
             btn: ['保存', '关闭'],
@@ -80,7 +83,7 @@
                 save('save_goods');                
                 return false;
               }           
-          });
+          });          
         },'json').fail(function(data,status){
             layer.close(layer.index);
             layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
@@ -107,26 +110,27 @@
         });
     }
     <?php }?>
-    <?php if($controller->hash_auth('goods','delete')){?> 
-　　function del(t){
+    <?php if($controller->hash_auth('goods','price')){?>      
+    function price(t){
         var row_data = table.row(t.parentNode).data();//t.parentNode 指的是按钮所在的行
-        layer.confirm('确认删除['+row_data.go_name+']吗?', 
-            {icon: 3, title:'提示'}, function(index){         
-            layer.load(1);              
-            $.post('/goods/del_goodstype',{'gt_uid':row_data.gt_uid},function(res){
-                layer.close(layer.index);
-                if (res.status) {
-                    layer.closeAll();
-                    layer.msg('删除成功',{icon:6});
-                    table.ajax.reload(); 
-                }else{                
-                    layer.msg('删除失败:'+JSON.stringify(res.info),{icon:5,time:5000});
-                }
-            },'json').fail(function(data,status){
-                layer.close(layer.index);
-                layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
-            });
+        layer.load(1); 
+        $.post('/goods/editpage', {'go_uid':row_data.go_uid,"gt_uid":row_data.gt_uid}, function(str){
+          layer.close(layer.index);
+          layer.open({
+            type: 1,
+            anim:-1,            
+            area: ['40%','80%'],
+            content: str.data,
+            btn: ['保存', '关闭'],
+            yes:function(index,layero){                
+                save('save_goods');                
+                return false;
+              }           
+          });          
+        },'json').fail(function(data,status){
+            layer.close(layer.index);
+            layer.msg(status+',错误代码'+data.status,{'icon':5,'time':5000});
         });
-    }
-    <?php }?>
+    } 
+    <?php }?> 
 </script>

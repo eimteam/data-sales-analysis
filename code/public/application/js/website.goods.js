@@ -1,4 +1,4 @@
-
+$.fn.dataTable.ext.errMode = 'throw';//设置DataTables的错误提示方式为抛出异常 
 var table=$('.dataTables-goods').DataTable({
         "serverSide": true,
         "info": true,
@@ -33,37 +33,32 @@ var table=$('.dataTables-goods').DataTable({
         //状态本地获取
         'stateLoadCallback': function(settings) {
             return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) );
-        },
-        //指定列
-        "aoColumnDefs": [ 
-          { 
-            "bSortable": false, //不参与排序
-            "aTargets": 0,
-            "searchable":false, //不进行检索
-           
-          }
-        ],
-        //第5列参与排序
-        "aaSorting": [[5, "asc"]],
+        },       
+        //第1列参与排序
+        "aaSorting": [[1, "asc"]],
         "ajax":{
             "url":'/goods/get_datatable_data',
 
         },
         "columns": [
             { 
-              "data": "go_uid" ,'title':'操作',
+              "data": "go_uid" ,'title':'',"orderable": false,"searchable": false,//不参与排序 不参与检索              
               "render": function (data, type, row) {                  
                   return $("#option").html();
               }
             },
-            { "data": "go_code" },
-            { "data": "go_name" },
-            { "data": "go_price1" },
-            { "data": "go_price2" },
-            { "data": "go_price3" },
-            { "data": "go_discount" },
-            { "data": "gt_uid" },
-            { "data": "sort" }
+            { "data": "gt_name" ,'title':'大类'},
+            { "data": "go_code",'title':'款号' },
+            { "data": "go_name" ,'title':'品名'},
+            { "data": "go_price1" ,'title':'零售'},
+            { "data": "go_price2",'title':'会员' },           
+            { "data": "count" ,'title':'件数'},
+            { "data": "first_time" ,'title':'首次入库'},
+            { "data": "last_time" ,'title':'最后销账'},
+            { "data": "in_count" ,'title':'累入'},  
+            { "data": "sell_count" ,'title':'累销'},
+            { "data": "return_count" ,'title':'累返'},
+            { "data": "sort" ,'name':'排序','title':'排序', "targets":1}
         ]        
     });
 //新增按钮追加到表格工具栏上

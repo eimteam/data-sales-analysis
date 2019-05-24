@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * 款号控制器
+ * 入库单
  * 
  */
-class goods extends BASE_Controller {
+class inventoryorder extends BASE_Controller {
 	public function __construct()
     {
         parent::__construct();
@@ -14,6 +14,8 @@ class goods extends BASE_Controller {
         $this->load->library('form_validation');  
         //预先载入验证规则,如果规则有变更可在方法内再次载入  
         $this->form_validation->set_rules($this->rules); 
+        //权限key
+        $this->auhKey='inventoryorder';
     } 
     public $rules=[
 		 [
@@ -62,8 +64,8 @@ class goods extends BASE_Controller {
 	{		
 		$data=[];
 		//选中的菜单项
-		$data['checkmenu']='goods_index';
-		if(!$this->hash_auth('goods','list')){
+		$data['checkmenu']='inventoryorder_index';
+		if(!$this->hash_auth($this->auhKey,'list')){
 			return $this->display('sys/401',$data);        	
         }
 		//页面需要加载的js文件		
@@ -77,10 +79,10 @@ class goods extends BASE_Controller {
 			"/js/plugins/dataTables/datatables.min.js",
 			"/js/plugins/chosen/chosen.jquery.js",		
 			"/js/plugins/touchspin/jquery.bootstrap-touchspin.min.js",
-			'/application/js/website.goods.js',
+			'/application/js/website.inventoryorder.js',
 		];	
 		//输出页面
-		$this->display('goods/index',$data);
+		$this->display('inventoryorder/index',$data);
 	}	
 	/**
 	 * 新增页面
@@ -90,7 +92,7 @@ class goods extends BASE_Controller {
 		if(!IS_POST){
 			return $this->ajaxReturn(0,'请使用POST提交',0);
 		}
-		if(!$this->hash_auth('goods','add')){
+		if(!$this->hash_auth($this->auhKey,'add')){
         	return $this->ajaxReturn(0,'您没有操作权限',0);
         }
         $pagedata=[];
@@ -108,7 +110,7 @@ class goods extends BASE_Controller {
 		if(!IS_POST){
 			return $this->ajaxReturn(0,'请使用POST提交',0);
 		}	
-		if(!$this->hash_auth('goods','edit')){
+		if(!$this->hash_auth($this->auhKey,'edit')){
         	return $this->ajaxReturn(0,'您没有操作权限',0);
         }	
 		$this->form_validation->set_data($this->input->post());        
@@ -135,7 +137,7 @@ class goods extends BASE_Controller {
 		if(!IS_POST){
 			return $this->ajaxReturn(0,'请使用POST提交',0);
 		}	
-		if(!$this->hash_auth('goods','save')){
+		if(!$this->hash_auth($this->auhKey,'save')){
         	return $this->ajaxReturn(0,'您没有操作权限',0);
         }
 		$param=$this->input->post();	
@@ -157,7 +159,7 @@ class goods extends BASE_Controller {
 		if(!IS_POST){
 			return $this->ajaxReturn(0,'请使用POST提交',0);
 		}	
-		if(!$this->hash_auth('goods','save')){
+		if(!$this->hash_auth($this->auhKey,'save')){
         	return $this->ajaxReturn(0,'您没有操作权限',0);
         }
 		$param=$this->input->post();	
