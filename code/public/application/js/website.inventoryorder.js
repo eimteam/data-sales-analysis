@@ -1,17 +1,39 @@
 $.fn.dataTable.ext.errMode = 'throw';//设置DataTables的错误提示方式为抛出异常 
-
-
+//赋值给表格的数据源
+var tData=[];
+var table;
 //重置
-function delrow(t,state){
-  var row_data = table.row(t.parentNode).data();
-  
-  initTable();
+function delrow(t,index){
+  //var row_data = table.row(t.parentNode).data();
+  if (index>-1) {
+    tData.splice(index,1);
+    initTable();
+  }
   //table.ajax.reload(); 
 }
+//新增数据到表格上
+function addTempTable(){
+    //根据已选颜色进行循环
+    var colors=$('#gt_color option:selected');
+    var sizes=$('#gt_size option:selected');
+    for (var i = 0; i < colors.length; i++) {
+        for (var j = 0; j <sizes.length; j++) {
+            tData.push({            
+            "go_uid":$('#go_code option:selected').val(),
+            "go_code":$('#go_code option:selected').text(),
+            "gt_uid":$('#gt_uid option:selected').val(),
+            "gt_name":$('#gt_uid option:selected').text(),
+            "go_name":$('#go_name').val(),
+            "color":colors[i].text,
+            "size":sizes[j].text,
+            "number":$('#count').val()
+          });
+        }
+    }
+    initTable();
+}
 
-var tData=[{"code":"1234","name":"T","type":"T1","color":"黑色","size":"M","number":0,"sizecount":3,"codecount":6},{"code":"1234","name":"T","type":"T1","color":"黑色","size":"L","number":0,"sizecount":0,"codecount":0},{"code":"1234","name":"T","type":"T1","color":"黑色","size":"XL","number":0,"sizecount":0,"codecount":0},{"code":"1234","name":"T","type":"T1","color":"白色","size":"M","number":0,"sizecount":3,"codecount":0},{"code":"1234","name":"T","type":"T1","color":"白色","size":"L","number":0,"sizecount":0,"codecount":0},{"code":"1234","name":"T","type":"T1","color":"白色","size":"XL","number":0,"sizecount":0,"codecount":0},{"code":"1235","name":"T","type":"T1","color":"黑色","size":"M","number":0,"sizecount":3,"codecount":6},{"code":"1235","name":"T","type":"T1","color":"黑色","size":"L","number":0,"sizecount":0,"codecount":0},{"code":"1235","name":"T","type":"T1","color":"黑色","size":"XL","number":0,"sizecount":0,"codecount":0},{"code":"1235","name":"T","type":"T1","color":"白色","size":"M","number":0,"sizecount":3,"codecount":0},{"code":"1235","name":"T","type":"T1","color":"白色","size":"L","number":0,"sizecount":0,"codecount":0},{"code":"1235","name":"T","type":"T1","color":"白色","size":"XL","number":0,"sizecount":0,"codecount":0}];
-
-var table;
+//初始化表格
 function initTable(){
    table=$('.dataTables-inventoryorder').DataTable({
       "destroy": true,
@@ -23,16 +45,16 @@ function initTable(){
         },       
         "columns": [
             {"data": null, class:'center',    title: "操作", "width": "8%"},            
-            {"data": "code", class:'center',title: "货号", "width": "15%"},     
-            {"data": "type",class:'center',title: "品类",   "width": "15%"},
-            {"data": "name",class:'center',title: "品名",   "width": "15%"},            
+            {"data": "go_code", class:'center',title: "货号", "width": "15%"},     
+            {"data": "gt_name",class:'center',title: "品类",   "width": "15%"},
+            {"data": "go_name",class:'center',title: "品名",   "width": "15%"},            
             {"data": "color",class:'center',title: "颜色",   "width": "15%"},
             {"data": "size",class:'center',title: "尺寸",   "width": "40%"},                      
         ],
         "fnDrawCallback": function () {
             this.api().column(0).nodes().each(function (cell, i) {
                 //cell.innerHTML = i + 1;
-                cell.innerHTML ="<span class='btn btn-link' onclick='delrow(this)'><i class='fa fa-trash-o'></i>删</span>";
+                cell.innerHTML ="<button class='btn btn-sm btn-primary' onclick='delrow(this,{0})'><i class='fa fa-trash-o'></i>删</span>".format(i);
                 
             });
         },
@@ -80,3 +102,54 @@ function initTable(){
 initTable();
 //新增按钮追加到表格工具栏上
 //$("div.dataTables_filter").append($("#toolbar_option").html());
+//
+//颜色选择
+$('#gt_color').chosen({width:'100%',disable_search:false,no_results_text: "未找到",});
+$('#gt_size').chosen({width:'100%',disable_search:false,no_results_text: "未找到",});
+//大类选择
+$("#gt_uid").chosen({
+  width:'100%',
+  no_results_text: "未找到",
+  search_contains:true,   //关键字模糊搜索。设置为true，只要选项包含搜索词就会显示
+  case_sensitive_search: false, //搜索大小写敏感。此处设为不敏感
+  disable_search_threshold: 0, //当选项少等于于指定个数时禁用搜索
+}).on('change',function(e,params){
+    //根据选定的类别 显示对应的颜色
+    var _color=$('#gt_uid option:selected').attr('data-color');
+    if (_color) {
+      _color=_color.split(',');
+      var options='';
+      for(var i in _color){
+          options+='<option value="{color}">{color}</option>'.format({'color':_color[i]});
+      }
+      $('#gt_color').html(options);
+      $('#gt_color').trigger('chosen:updated');
+    }  
+    var _size=$('#gt_uid option:selected').attr('data-size');  
+    if (_size) {
+      _size=_size.split(',');
+      var options='';
+      for(var i in _size){
+          options+='<option value="{size}">{size}</option>'.format({'size':_size[i]});
+      }
+      $('#gt_size').html(options);
+      $('#gt_size').trigger('chosen:updated');      
+    } 
+}).trigger("change");//手动触发一下change事件
+//款号选择
+$("#go_code").chosen({
+  width:'100%',
+  no_results_text: "新货号<label class='label btn'>点我创建</label>",
+  search_contains:true,   //关键字模糊搜索。设置为true，只要选项包含搜索词就会显示
+  case_sensitive_search: false, //搜索大小写敏感。此处设为不敏感
+  disable_search_threshold: 0, //当选项少等于于指定个数时禁用搜索
+}).on('change', function(e, params) {
+  //赋值品名
+  var _name=$('#go_code option:selected').attr('data-name');
+  if (_name) {
+    $('#go_name').val(_name);
+    $('#go_price1').val($('#go_code option:selected').attr('data-price1'));
+    $('#go_price2').val($('#go_code option:selected').attr('data-price2'));
+    $('#go_price3').val($('#go_code option:selected').attr('data-price3'));
+  }  
+}).trigger("change");

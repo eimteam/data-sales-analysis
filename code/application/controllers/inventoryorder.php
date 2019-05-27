@@ -10,6 +10,8 @@ class inventoryorder extends BASE_Controller {
         parent::__construct();
         //载入了对应的Model
         $this->load->model('goodsModel','Model');   
+        $this->load->model('goodstypeModel');
+        $this->load->model('goodsModel');
         //表单验证
         $this->load->library('form_validation');  
         //预先载入验证规则,如果规则有变更可在方法内再次载入  
@@ -72,16 +74,17 @@ class inventoryorder extends BASE_Controller {
 		$data['load_css']=[
 			"/css/plugins/dataTables/datatables.min.css",
 			"/css/plugins/chosen/bootstrap-chosen.css",
-			"/css/plugins/touchspin/jquery.bootstrap-touchspin.min.css"
 		];
 		//页面需要加载的js文件
 		$data['load_js']=[
 			"/js/plugins/dataTables/datatables.min.js",
 			"/js/plugins/chosen/chosen.jquery.js",		
-			"/js/plugins/touchspin/jquery.bootstrap-touchspin.min.js",
 			'/application/js/website.inventoryorder.js',
 		];	
+		//获取大类		
+		$data['typedata']=$this->goodstypeModel->selectData(array('where'=>['shop_uid'=>$this->shopuid]));
 		//输出页面
+		$data['goodsdata']=$this->goodsModel->selectData(array('where'=>['shop_uid'=>$this->shopuid]));
 		$this->display('inventoryorder/index',$data);
 	}	
 	/**
@@ -99,6 +102,8 @@ class inventoryorder extends BASE_Controller {
         //获取大类
 		$this->load->model('goodstypeModel');
 		$pagedata['typedata']=$this->goodstypeModel->selectData(array('where'=>['shop_uid'=>$this->shopuid]));
+		//获取已有的货号
+		
 		$page=$this->load->view('goods/edit',$pagedata,true);
 		return $this->ajaxReturn($page);
 	}	
