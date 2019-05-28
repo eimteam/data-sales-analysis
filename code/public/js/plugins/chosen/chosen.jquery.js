@@ -1079,7 +1079,7 @@
 
         Chosen.prototype.no_results = function(terms) {
             var no_results_html;
-            no_results_html = $('<li class="no-results">' + this.results_none_found + ' "<span></span>"</li>');
+            no_results_html = $('<li class="no-results">' + this.results_none_found + ' <span></span></li>');
             no_results_html.find("span").first().html(terms);
             this.search_results.append(no_results_html);
             return this.form_field_jq.trigger("chosen:no_results", {

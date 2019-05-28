@@ -63,7 +63,7 @@ class inventoryorder extends BASE_Controller {
 	 * @return [type] [description]
 	 */
 	public function index()
-	{		
+	{				
 		$data=[];
 		//选中的菜单项
 		$data['checkmenu']='inventoryorder_index';

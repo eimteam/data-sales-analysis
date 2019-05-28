@@ -121,6 +121,7 @@ class BASE_Controller extends PUBLIC_CONTROLLER{
      * @return [type]       [description]
      */
     public function display($page,$data=[]){   
+        $this->output->cache(5);//缓存5分钟
         //将this变量传入到view中,以便view调用controller的方法
         $data['controller']=$this;
         $this->set_menu_page($data);     

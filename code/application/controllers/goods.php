@@ -83,6 +83,14 @@ class goods extends BASE_Controller {
 		$this->display('goods/index',$data);
 	}	
 	/**
+	 * 获取货号 返回给page
+	 * @return [type] [description]
+	 */
+	public function getData(){
+		$result = $this->Model->selectData(array('where'=>['shop_uid'=>$this->shopuid]));
+		return $this->ajaxReturn($result);
+	}
+	/**
 	 * 新增页面
 	 * @return [type] [description]
 	 */
@@ -146,7 +154,8 @@ class goods extends BASE_Controller {
         {
             return $this->ajaxReturn(0, $this->form_validation->error_array(), 0);
         }        
-        $result=$this->Model->addData($param);
+        $result['data']=$this->Model->addData($param);
+        $result['go_uid']=$param['go_uid'];
 		return $this->ajaxReturn($result);
 	}
 	/**

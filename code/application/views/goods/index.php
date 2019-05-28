@@ -36,7 +36,7 @@
     <?php }?>  
 </script>
 <script>
-    <?php if($controller->hash_auth('goods','edit')){?>   
+    <?php if($controller->hash_auth('goods','add')){?>   
     var add_html="";
     //获取页面html   
     function add(){

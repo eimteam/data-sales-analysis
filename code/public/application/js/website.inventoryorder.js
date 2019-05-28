@@ -13,9 +13,10 @@ function delrow(t,index){
 }
 //新增数据到表格上
 function addTempTable(){
+
     //根据已选颜色进行循环
     var colors=$('#gt_color option:selected');
-    var sizes=$('#gt_size option:selected');
+    var sizes=$('#gt_size option:selected');    
     for (var i = 0; i < colors.length; i++) {
         for (var j = 0; j <sizes.length; j++) {
             tData.push({            
@@ -30,7 +31,11 @@ function addTempTable(){
           });
         }
     }
-    initTable();
+    if (colors.length&&sizes.length) {
+      initTable();
+    }else{
+      layer.msg('颜色和尺寸是必选项');
+    }
 }
 
 //初始化表格
@@ -139,7 +144,8 @@ $("#gt_uid").chosen({
 //款号选择
 $("#go_code").chosen({
   width:'100%',
-  no_results_text: "新货号<label class='label btn'>点我创建</label>",
+  //no_results_text:第一个span 就是搜索框的内容,如果不写span会自动加一个span
+  no_results_text: "新货号<span id='new_go_code'></span><p/><label class='label btn' onclick='savegoods()'>点我创建</label>",
   search_contains:true,   //关键字模糊搜索。设置为true，只要选项包含搜索词就会显示
   case_sensitive_search: false, //搜索大小写敏感。此处设为不敏感
   disable_search_threshold: 0, //当选项少等于于指定个数时禁用搜索
